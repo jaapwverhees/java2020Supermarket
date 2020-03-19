@@ -1,19 +1,17 @@
 package models;
 
 
-public class RegularCard extends Card implements Payment {
+public class RegularCard extends Card {
 
-    public RegularCard(int cardId, String name, double credit) {
-        super(cardId, name, credit);
-    }
+    private static final double MINIMUM_CREDIT = 0;
 
-    public RegularCard(int cardId, String name, String address, String city, double credit) {
-        super(cardId, name, address, city, credit);
+    public RegularCard(double credit) {
+        super(credit);
     }
 
     public boolean pay(int amount) {
-        if(this.getCredit() - amount < 0.0) return false;
-        else{
+        if (this.getCredit() - amount < MINIMUM_CREDIT) return false;
+        else {
             this.setCredit(this.getCredit() - amount);
         }
         return true;

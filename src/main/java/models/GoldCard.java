@@ -1,22 +1,15 @@
 package models;
 
-import com.sun.deploy.security.SelectableSecurityManager;
+public class GoldCard extends Card {
 
-
-public class GoldCard extends Card implements Payment {
-    
     private int discount;
-    private double hello;
+    private static final double MINIMUM_CREDIT = 0;
 
-    public GoldCard(int cardId, String name,  double credit, int discount) throws IllegalArgumentException {
-        super(cardId, name, credit);
-    }
-
-    public GoldCard(int cardId, String name, String address, String city, double credit, int discount) throws IllegalArgumentException {
-        super(cardId, name, address, city, credit);
-        if(discount>0 && discount <= 30 ){
+    public GoldCard(double credit, int discount) throws IllegalArgumentException {
+        super(credit);
+        if (discount >= 0 && discount <= 30) {
             this.discount = discount;
-        } else{
+        } else {
             throw new IllegalArgumentException("discount not in range of greater then 0 and 30");
         }
     }
@@ -26,19 +19,19 @@ public class GoldCard extends Card implements Payment {
     }
 
     public void setDiscount(int discount) throws IllegalArgumentException {
-        if(discount>0 && discount <= 30 ){
+        if (discount >= 0 && discount <= 30) {
             this.discount = discount;
-        } else{
+        } else {
             throw new IllegalArgumentException("discount not in range of greater then 0 and 30");
         }
     }
 
     public boolean pay(int amount) {
-        System.out.println(this.getCredit() - ((amount / 100.00) * (100.00 - discount)));
-        if(this.getCredit() - ((amount * discount) / 100.00) < 0.00) return false;
-        else{
-            this.setCredit(this.getCredit() - amount);
+        if (this.getCredit() - ((amount / 100.00) * (100.00 - discount)) < MINIMUM_CREDIT) {
+            return false;
+        } else {
+            this.setCredit(this.getCredit() - ((amount / 100.00) * (100.00 - discount)));
+            return true;
         }
-        return true;
     }
 }
